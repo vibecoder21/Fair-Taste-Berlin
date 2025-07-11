@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fair Taste - Karriere</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Fair Taste</h1>
+            <p class="subtitle">Catering Excellence in Berlin</p>
+        </header>
+
+        <main id="main-content">
+            <!-- Main recruitment screen -->
+            <section id="recruitment-section" class="recruitment-section">
+                <div class="content-wrapper">
+                    <h2>Werde Teil unseres Teams!</h2>
+                    
+                    <div class="description">
+                        <p>Du hast Lust auf spannende Events, ein herzliches Team und möchtest flexibel nebenbei arbeiten? Wir bei Fair Taste sind immer auf der Suche nach neuen Talenten – ob erfahrene Profis, motivierte Quereinsteiger oder engagierte Aushilfen.</p>
+                        
+                        <p><strong>Aktuell suchen wir Unterstützung in folgenden Bereichen:</strong></p>
+                        
+                        <ul class="job-positions">
+                            <li>Veranstaltungsleiter/in</li>
+                            <li>Köche/innen</li>
+                            <li>Beiköche/innen</li>
+                            <li>Serviceleiter/in</li>
+                            <li>Servicekräfte</li>
+                            <li>Logistiker/in</li>
+                            <li>Fahrer/in</li>
+                            <li>Aufbauhelfer/in</li>
+                        </ul>
+                    </div>
+
+                    <div class="employment-options">
+                        <div class="option-card" id="freelancer-option">
+                            <h3>Ich bin ein Freelancer!</h3>
+                            <p>Flexible Projekte, eigene Zeiteinteilung</p>
+                        </div>
+                        <div class="option-card" id="minijob-option">
+                            <h3>Ich bin ein Mini-Jobber!</h3>
+                            <p>Regelmäßige Teilzeit, bis 538€ monatlich</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Application form -->
+            <section id="application-section" class="application-section hidden">
+                <div class="content-wrapper">
+                    <h2>Bewerbungsformular</h2>
+                    <div class="selected-type">
+                        <span id="selected-employment-type"></span>
+                    </div>
+                    
+                    <form id="application-form" class="application-form">
+                        <div class="form-group">
+                            <label for="vorname_nachname" class="form-label">Vor- und Nachname *</label>
+                            <input type="text" id="vorname_nachname" name="vorname_nachname" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="geburtsdatum" class="form-label">Geburtsdatum *</label>
+                            <input type="date" id="geburtsdatum" name="geburtsdatum" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="erfahrungen" class="form-label">Deine bisherigen Erfahrungen *</label>
+                            <textarea id="erfahrungen" name="erfahrungen" class="form-control" rows="4" required placeholder="Beschreibe deine relevanten Erfahrungen im Catering oder ähnlichen Bereichen..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="foto" class="form-label">Ein Foto von dir (optional)</label>
+                            <input type="file" id="foto" name="foto" class="form-control" accept="image/*">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Adresse *</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="telefon" class="form-label">Telefonnummer *</label>
+                            <input type="tel" id="telefon" name="telefon" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="wohnort" class="form-label">Wohnort/Bezirk *</label>
+                            <input type="text" id="wohnort" name="wohnort" class="form-control" required>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" id="back-button" class="btn btn--secondary">Zurück</button>
+                            <button type="submit" class="btn btn--primary">Bewerbung absenden</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Success message -->
+            <section id="success-section" class="success-section hidden">
+                <div class="content-wrapper">
+                    <div class="success-message">
+                        <h2>Vielen Dank für deine Bewerbung!</h2>
+                        <p>Deine Bewerbung wurde erfolgreich übermittelt. Wir werden uns in den nächsten Tagen bei dir melden.</p>
+                        <p>Bei Fragen kannst du uns gerne unter <a href="mailto:info@fair-taste.de">info@fair-taste.de</a> kontaktieren.</p>
+                        <button type="button" id="new-application-button" class="btn btn--primary">Neue Bewerbung</button>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2025 Fair Taste. Alle Rechte vorbehalten.</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
