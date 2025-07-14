@@ -32,7 +32,7 @@ function init() {
     applicationForm.addEventListener('submit', handleFormSubmissionWithLoading);
     
     // Add input event listeners for real-time validation
-    const formInputs = applicationForm.querySelectorAll('input, textarea');
+    const formInputs = applicationForm.querySelectorAll('input, textarea, select');
     formInputs.forEach(input => {
         input.addEventListener('blur', () => validateField(input));
         input.addEventListener('input', () => clearFieldError(input));
@@ -174,7 +174,7 @@ function clearAllErrors() {
     const errorElements = applicationForm.querySelectorAll('.error-message');
     errorElements.forEach(element => element.remove());
     
-    const inputs = applicationForm.querySelectorAll('input, textarea');
+    const inputs = applicationForm.querySelectorAll('input, textarea, select');
     inputs.forEach(input => {
         input.style.borderColor = 'var(--color-border)';
     });
@@ -182,7 +182,7 @@ function clearAllErrors() {
 
 // Validate entire form
 function validateForm() {
-    const formInputs = applicationForm.querySelectorAll('input[required], textarea[required]');
+    const formInputs = applicationForm.querySelectorAll('input[required], textarea[required], select[required]');
     let isFormValid = true;
     
     formInputs.forEach(input => {
@@ -197,7 +197,7 @@ function validateForm() {
 // Set loading state to form submission
 function setFormLoading(isLoading) {
     const submitButton = applicationForm.querySelector('button[type="submit"]');
-    const inputs = applicationForm.querySelectorAll('input, textarea, button');
+    const inputs = applicationForm.querySelectorAll('input, textarea, select, button');
     
     if (isLoading) {
         submitButton.textContent = 'Wird gesendet...';
@@ -217,7 +217,7 @@ function handleFormSubmissionWithLoading(event) {
     if (!validateForm()) {
         const firstError = applicationForm.querySelector('.error-message');
         if (firstError) {
-            const errorField = firstError.closest('.form-group').querySelector('input, textarea');
+            const errorField = firstError.closest('.form-group').querySelector('input, textarea, select');
             errorField.focus();
         }
         return;
@@ -232,7 +232,14 @@ function handleFormSubmissionWithLoading(event) {
         const applicationData = {};
         
         for (let [key, value] of formData.entries()) {
-            applicationData[key] = value;
+            if (key === 'positions') {
+                if (!applicationData[key]) {
+                    applicationData[key] = [];
+                }
+                applicationData[key].push(value);
+            } else {
+                applicationData[key] = value;
+            }
         }
         
         applicationData.employmentType = selectedEmploymentType;
@@ -260,6 +267,8 @@ Geburtsdatum: ${formData.geburtsdatum}
 E-Mail: ${formData.email}
 Telefon: ${formData.telefon}
 Wohnort: ${formData.wohnort}
+
+Positionen: ${Array.isArray(formData.positions) ? formData.positions.join(', ') : formData.positions || ''}
 
 Erfahrungen:
 ${formData.erfahrungen}
