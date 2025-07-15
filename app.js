@@ -256,9 +256,13 @@ function handleFormSubmissionWithLoading(event) {
             }
             return response.json();
         })
-        .then(() => {
+        .then(result => {
             setFormLoading(false);
-            showSuccessSection();
+            if (result && result.success) {
+                showSuccessSection();
+            } else {
+                throw new Error('Send failed');
+            }
         })
         .catch(error => {
             console.error('Submission error:', error);

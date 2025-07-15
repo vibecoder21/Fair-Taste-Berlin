@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
 app.use(cors());
+app.use(express.static(path.join(__dirname)));
 
 // Load SMTP configuration from environment variables
 const {
@@ -23,6 +25,10 @@ const transporter = nodemailer.createTransport({
   secure: false,
   auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
 });
+
+if (!SMTP_HOST || !SMTP_USER || !SMTP_PASS) {
+  console.warn('Warning: SMTP configuration is incomplete. Emails will not be sent.');
+}
 
 app.post('/api/apply', upload.single('foto'), async (req, res) => {
   try {
@@ -41,10 +47,16 @@ app.post('/api/apply', upload.single('foto'), async (req, res) => {
 
     await transporter.sendMail(mailOptions);
     res.json({ success: true });
+    console.log('Application email sent to', EMAIL_TO);
   } catch (error) {
-    console.error('Mail error', error);
+    console.error('Mail error:', error.message);
     res.status(500).json({ success: false });
   }
+});
+
+// Serve index for all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
