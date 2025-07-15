@@ -225,33 +225,46 @@ function handleFormSubmissionWithLoading(event) {
     
     // Set loading state
     setFormLoading(true);
-    
-    // Simulate API call delay
-    setTimeout(() => {
-        const formData = new FormData(applicationForm);
-        const applicationData = {};
-        
-        for (let [key, value] of formData.entries()) {
-            if (key === 'positions') {
-                if (!applicationData[key]) {
-                    applicationData[key] = [];
-                }
-                applicationData[key].push(value);
-            } else {
-                applicationData[key] = value;
+
+    const formData = new FormData(applicationForm);
+    const applicationData = {};
+
+    for (let [key, value] of formData.entries()) {
+        if (key === 'positions') {
+            if (!applicationData[key]) {
+                applicationData[key] = [];
             }
+            applicationData[key].push(value);
+        } else {
+            applicationData[key] = value;
         }
-        
-        applicationData.employmentType = selectedEmploymentType;
-        
-        const emailData = prepareEmailData(applicationData);
-        
-        console.log('Form submitted:', applicationData);
-        console.log('Email data:', emailData);
-        
-        setFormLoading(false);
-        showSuccessSection();
-    }, 1500);
+    }
+
+    applicationData.employmentType = selectedEmploymentType;
+
+    const emailData = prepareEmailData(applicationData);
+    formData.append('subject', emailData.subject);
+    formData.append('body', emailData.body);
+
+    fetch('/api/apply', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Server Error');
+            }
+            return response.json();
+        })
+        .then(() => {
+            setFormLoading(false);
+            showSuccessSection();
+        })
+        .catch(error => {
+            console.error('Submission error:', error);
+            setFormLoading(false);
+            alert('Es gab ein Problem beim Senden der Bewerbung. Bitte versuche es später erneut.');
+        });
 }
 
 // Prepare email data
