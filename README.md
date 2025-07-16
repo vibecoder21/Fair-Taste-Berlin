@@ -13,11 +13,13 @@ This repo contains a simple form for submitting job applications and a small Nod
    ```bash
    npm start
    ```
-   The server will listen on port `3000` by default.
+   The server will listen on port `3000` by default and serves the form from the same origin.
+   Open [http://localhost:3000](http://localhost:3000) to access the form and API.
 
 ## Deploying static site
 
-When hosting the front‑end on a different domain (for example GitHub Pages) you need to specify the URL of your backend API. Edit the `window.API_BASE_URL` value in `index.html` or set it dynamically before `app.js` is loaded:
+The easiest way to run the project is to use the Node server which serves both the form and the API.
+When hosting the front‑end on a different domain (for example GitHub Pages) you still need to specify the URL of your backend API. Edit the `window.API_BASE_URL` value in `index.html` or set it dynamically before `app.js` is loaded:
 
 ```html
 <script>

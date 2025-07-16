@@ -2,11 +2,13 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
+const path = require('path');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
 const app = express();
 app.use(cors());
+app.use(express.static(path.join(__dirname)));
 
 // Load SMTP configuration from environment variables
 const {
