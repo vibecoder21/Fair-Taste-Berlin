@@ -34,21 +34,13 @@ async function getTransporter() {
     return transporter;
   }
 
-  const testAccount = await nodemailer.createTestAccount();
-  console.log('No SMTP configuration found. Using Ethereal test account.');
-  console.log(`Login: ${testAccount.user}`);
-  console.log(`Password: ${testAccount.pass}`);
-
-  transporter = nodemailer.createTransport({
-    host: testAccount.smtp.host,
-    port: testAccount.smtp.port,
-    secure: testAccount.smtp.secure,
-    auth: {
-      user: testAccount.user,
-      pass: testAccount.pass
+  console.log('No SMTP configuration found. Emails will be logged to the console.');
+  transporter = {
+    async sendMail(options) {
+      console.log('Mail contents:', options);
+      return { messageId: 'console' };
     }
-  });
-
+  };
   return transporter;
 }
 
