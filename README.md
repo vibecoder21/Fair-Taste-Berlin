@@ -8,7 +8,7 @@ This repo contains a simple form for submitting job applications and a small Nod
    ```bash
    npm install
    ```
-2. Create an `.env` file based on `.env.example` and provide the SMTP credentials.
+2. (Optional) Create an `.env` file based on `.env.example` and provide the SMTP credentials if you want emails to be sent via an SMTP server. Without these variables the server will simply log the email contents to the console.
 3. Start the server:
    ```bash
    npm start

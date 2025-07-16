@@ -17,12 +17,26 @@ const {
   EMAIL_TO = 'info@fair-taste.de'
 } = process.env;
 
-const transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT ? Number(SMTP_PORT) : 587,
-  secure: false,
-  auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
-});
+let transporter;
+if (SMTP_HOST) {
+  transporter = nodemailer.createTransport({
+    host: SMTP_HOST,
+    port: SMTP_PORT ? Number(SMTP_PORT) : 587,
+    secure: false,
+    auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
+  });
+} else {
+  console.warn('SMTP configuration missing, emails will be logged to the console');
+  transporter = {
+    async sendMail(mailOptions) {
+      console.log('--- Email preview ---');
+      console.log('To:', EMAIL_TO);
+      console.log('Subject:', mailOptions.subject);
+      console.log(mailOptions.text);
+      console.log('---------------------');
+    }
+  };
+}
 
 app.post('/api/apply', upload.single('foto'), async (req, res) => {
   try {
