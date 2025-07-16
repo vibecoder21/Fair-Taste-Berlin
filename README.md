@@ -9,6 +9,8 @@ This repo contains a simple form for submitting job applications and a small Nod
    npm install
    ```
 2. Create an `.env` file based on `.env.example` and provide the SMTP credentials.
+   When no credentials are provided, the server automatically falls back to a temporary
+   [Ethereal](https://ethereal.email/) account and prints a preview URL for each email.
 3. Start the server:
    ```bash
    npm start

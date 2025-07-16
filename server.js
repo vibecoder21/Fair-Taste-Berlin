@@ -19,15 +19,42 @@ const {
   EMAIL_TO = 'info@fair-taste.de'
 } = process.env;
 
-const transporter = nodemailer.createTransport({
-  host: SMTP_HOST,
-  port: SMTP_PORT ? Number(SMTP_PORT) : 587,
-  secure: false,
-  auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
-});
+let transporter;
+
+async function getTransporter() {
+  if (transporter) return transporter;
+
+  if (SMTP_HOST) {
+    transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT ? Number(SMTP_PORT) : 587,
+      secure: false,
+      auth: SMTP_USER && SMTP_PASS ? { user: SMTP_USER, pass: SMTP_PASS } : undefined
+    });
+    return transporter;
+  }
+
+  const testAccount = await nodemailer.createTestAccount();
+  console.log('No SMTP configuration found. Using Ethereal test account.');
+  console.log(`Login: ${testAccount.user}`);
+  console.log(`Password: ${testAccount.pass}`);
+
+  transporter = nodemailer.createTransport({
+    host: testAccount.smtp.host,
+    port: testAccount.smtp.port,
+    secure: testAccount.smtp.secure,
+    auth: {
+      user: testAccount.user,
+      pass: testAccount.pass
+    }
+  });
+
+  return transporter;
+}
 
 app.post('/api/apply', upload.single('foto'), async (req, res) => {
   try {
+    const transport = await getTransporter();
     const data = req.body;
     const attachment = req.file
       ? [{ filename: req.file.originalname, content: req.file.buffer }]
@@ -41,7 +68,7 @@ app.post('/api/apply', upload.single('foto'), async (req, res) => {
       attachments: attachment
     };
 
-    await transporter.sendMail(mailOptions);
+    await transport.sendMail(mailOptions);
     res.json({ success: true });
   } catch (error) {
     console.error('Mail error', error);
