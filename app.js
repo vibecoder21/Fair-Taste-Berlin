@@ -246,7 +246,8 @@ function handleFormSubmissionWithLoading(event) {
     formData.append('subject', emailData.subject);
     formData.append('body', emailData.body);
 
-    fetch('/api/apply', {
+    const base = window.API_BASE_URL ? window.API_BASE_URL.replace(/\/?$/, '') : '';
+    fetch(`${base}/api/apply`, {
         method: 'POST',
         body: formData
     })
